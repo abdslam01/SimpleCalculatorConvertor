@@ -4,8 +4,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -142,6 +140,10 @@ public class Calculator extends JFrame implements ActionListener{
 		
 		switch(e.getActionCommand()) {
 			case "Hex":
+				/*
+				 * Initialiser les input par 'null', et activer tous les buttons propres au calcules hexadecimale
+				 * et si il ya une valeur au champs input, le transformer en hexadecimale
+				 */
 				InputOutput.put("FirstInputOutput",null);
 				InputOutput.put("SecondInputOutput",null);
 				for(String Name : methods.concat(HexBtns, DecBtns))
@@ -152,6 +154,11 @@ public class Calculator extends JFrame implements ActionListener{
 				break;
 				
 			case "Déc":
+				/*
+				 * Initialiser les input par 'null', et activer tous les buttons propres au calcules decimale
+				 * et déactiver les autres
+				 * et si il ya une valeur au champs input, le transformer en decimale
+				 */
 				InputOutput.put("FirstInputOutput",null);
 				InputOutput.put("SecondInputOutput",null);
 				for(String Name : DecBtns)
@@ -163,6 +170,11 @@ public class Calculator extends JFrame implements ActionListener{
 				break;
 				
 			case "Bin":
+				/*
+				 * Initialiser les input par 'null', et activer tous les buttons propres au calcules binaire
+				 * et déactiver les autres
+				 * et si il ya une valeur au champs input, le transformer en binaire
+				 */
 				InputOutput.put("FirstInputOutput",null);
 				InputOutput.put("SecondInputOutput",null);
 				for(String Name : methods.concat(HexBtns, DecBtns))
@@ -172,6 +184,10 @@ public class Calculator extends JFrame implements ActionListener{
 				break;
 				
 			case "On/Off":
+				/*
+				 * si les buttons et active, les deactiver, si non, les activers et initialiser les input par 'null'
+				 * et reinitialiser l'etat par defaut du programme
+				 */
 				if(Btns.get("c").isEnabled()) {
 					for(JButton btn : Btns.values())
 						btn.setEnabled(false);
@@ -193,10 +209,16 @@ public class Calculator extends JFrame implements ActionListener{
 				break;
 				
 			case "←":
+				/*
+				 * permrt annuler le dernier nombre inserer au chapms input
+				 */
 				textField.setText(methods.cancelLastChar(textField.getText()));
 				break;
 				
 			case "c":
+				/*
+				 * initialiser les input, et vider le champs input
+				 */
 				textField.setText("");
 				InputOutput.put("FirstInputOutput", null);
 				InputOutput.put("SecondInputOutput", null);
@@ -206,40 +228,59 @@ public class Calculator extends JFrame implements ActionListener{
 			case "*":
 			case "-":
 			case "+":
+				/*
+				 * insertion des valeur a calculer
+				 */
 				if(!textField.getText().equals("")) {
 					if(InputOutput.get("FirstInputOutput") == null)
 						InputOutput.put("FirstInputOutput",textField.getText());
 					else
 						InputOutput.put("SecondInputOutput",textField.getText());
 				}
+				/*
+				 * definir le type de l'opération a effectuer
+				 */
 				InputOutput.put("OprType", e.getActionCommand());
 				InputOutput.put("State", "true");
 				break;
 				
 			case "=":
+				/*
+				 * definir le type des operands et initialise le 2eme input
+				 */
 				InputOutput.put("OpdType", InputOutput.get("LastRadioClicked"));
 				InputOutput.put("SecondInputOutput", textField.getText());
+				
+				/*
+				 * si tous les champs de HashMap 'InputOutput' non nul, effectuer l'operation de calcule et l'afficher
+				 */
 				if(!InputOutput.containsValue(null)) {
 					switch(InputOutput.get("OprType")) {
 					case "/":
-						InputOutput.put("FirstInputOutput", methods.division(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
+						textField.setText( methods.division(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
 						break;
 					case "*":
-						InputOutput.put("FirstInputOutput", methods.multiplication(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
+						textField.setText(methods.multiplication(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
 						break;
 					case "-":
-						InputOutput.put("FirstInputOutput", methods.subtraction(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
+						textField.setText(methods.subtraction(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
 						break;
 					case "+":
-						InputOutput.put("FirstInputOutput", methods.addition(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
+						textField.setText(methods.addition(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
 						break;
 					}
-					textField.setText(InputOutput.get("FirstInputOutput"));
+					/*
+					 * initialiser les input, et vider le champs input
+					 */
 					InputOutput.put("FirstInputOutput", null);
 					InputOutput.put("SecondInputOutput", null);
 				}
 				break;
 			default:
+				/*
+				 * cette partie executer si l'utilisateur cliquer sur une des buttons ci-après:
+				 * 		[0,1,2,3,4,5,6,7,8,9,{,},A,B,C,D,E,F]
+				 */
 				if(InputOutput.get("State").equals("true")) {
 					InputOutput.put("State", "false");
 					textField.setText("");
@@ -248,13 +289,10 @@ public class Calculator extends JFrame implements ActionListener{
 					if(!e.getActionCommand().equals("."))
 						textField.setText(e.getActionCommand());
 				}else {
-					if(!e.getActionCommand().equals(".")) {
+					if(!e.getActionCommand().equals("."))
 						textField.setText(textField.getText() + e.getActionCommand());
-					}else {
-						if(!methods.isContains(textField.getText(), '.')) {
+					else if(!methods.isContains(textField.getText(), '.'))
 							textField.setText(textField.getText() + ".");
-						}
-					}
 				}
 		}
 	}

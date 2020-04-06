@@ -1,4 +1,5 @@
 public class Methods{	
+	
 	public String toHex(String str, String from) {
 		try {
 			if(from.equals("Bin")) // Binary to Hexadecimal
@@ -15,7 +16,7 @@ public class Methods{
 	}
 	public String toDec(String str, String from) {
 		try {
-			if(from.equals("Hex")) //Hexadecimal to Decimal
+			if(from.equals("Hex")) //Hexadecimal to Decimalw
 				return Integer.toString(Integer.parseInt(str, 16));
 			else //Binary to Decimal
 				return Integer.toString(Integer.parseInt(str, 2));
