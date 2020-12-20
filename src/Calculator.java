@@ -23,10 +23,10 @@ public class Calculator extends JFrame implements ActionListener{
 	private HashMap<String, String> InputOutput;
 	/*
 	 	le HashMap 'Btns': contient 25 buttons, qui ont comme noms, la liste ci-apres
-	 		 -{"A","On/Off","←","c","/","B","7","8","9","*","C","4","5","6","-","D","1","2","3","+","E","F","0",".","="}
+	 		 -{"A","On/Off","â†�","c","/","B","7","8","9","*","C","4","5","6","-","D","1","2","3","+","E","F","0",".","="}
 	 	le HashMap 'radioBtns': contient les 3 radio Buttons:
 	 		 -Hex Radio Button, Dec Radio Button, Bin Radio Button
-	 	le HashMap 'InputOutput' à:
+	 	le HashMap 'InputOutput' Ã :
 		 	 -BeforeLastRadioButtonClicked: sert a enregister le nom de la radio button qui ete cliquer [def: Hex]
 		 	 -LastRadioButtonClicked: sert a enregister le nom de la radio button qui ete cliquer actuellement [def: Hex]
 		 	 -FirstInputOutput: sert a enregister la 1ere input de l'utilisateur [def: null]
@@ -68,13 +68,13 @@ public class Calculator extends JFrame implements ActionListener{
 		
 		/*
 		 * Creation et Initialisation des 3 radio Button, et leur Propres groupe
-		 * Les ajouts au HashMap, les nommées, et les a créés des ecouteurs
+		 * Les ajouts au HashMap, les nommÃ©es, et les a crÃ©Ã©s des ecouteurs
 		 * Les ajout au panel
 		 */
 		radioPanel=new JPanel();
 		radioGroup=new ButtonGroup();
 		radioBtns=new HashMap<String,JRadioButton>();
-		String RadioBtnsName[]= {"Hex","Déc","Bin"};
+		String RadioBtnsName[]= {"Hex","Dec","Bin"};
 		for(String Name: RadioBtnsName) {
 			radioBtns.put(Name,new JRadioButton(Name));
 			radioGroup.add(radioBtns.get(Name));
@@ -86,13 +86,13 @@ public class Calculator extends JFrame implements ActionListener{
 		
 		/*
 		 * Creation et Initialisation des 25 Button
-		 * Les ajouts au HashMap, les nommées, et les a créés des ecouteurs
+		 * Les ajouts au HashMap, les nommÃ©es, et les a crÃ©Ã©s des ecouteurs
 		 * Les ajout au panel
 		 */
 		buttonPanel=new JPanel();
 		buttonPanel.setLayout(new GridLayout(5,5,5,5));
 		Btns=new HashMap<String,JButton>();
-		String BtnsName[]= {"A","On/Off","←","c","/","B","7","8","9","*","C","4","5","6","-","D","1","2","3","+","E","F","0",".","="};
+		String BtnsName[]= {"A","On/Off","->","c","/","B","7","8","9","*","C","4","5","6","-","D","1","2","3","+","E","F","0",".","="};
 		for(String Name: BtnsName) {
 			Btns.put(Name,new JButton(Name));
 			Btns.get(Name).setPreferredSize(new Dimension(0,35));
@@ -104,7 +104,7 @@ public class Calculator extends JFrame implements ActionListener{
 		getContentPane().add(buttonPanel);
 		
 		/*
-		 * Définir l'action par défaut lors de l'exécution de l'application
+		 * DÃ©finir l'action par defaut lors de l'execution de l'application
 		 */
 		radioBtns.get("Hex").setSelected(true);
 		radioBtns.get("Hex").doClick();
@@ -124,16 +124,15 @@ public class Calculator extends JFrame implements ActionListener{
 	}
 	public void actionPerformed(ActionEvent e) {
 		/*
-		 * Creation de l'objet qui contient les methode a utilise
+		 * utilisation des methodes statique de la class Methods pour gerer les actions
 		 */
-		Methods methods=new Methods();
 		String HexBtns[]= {"A","B","C","D","E","F"};
 		String DecBtns[]= {"2","3","4","5","6","7","8","9","."};
 
 		/*
 		 * En cas de clique sur l'une des radio button, enregister l'evenement actueal, ainsi que le precedent 
 		 */
-		if(methods.isContains(new String[]{"Hex","Déc","Bin"}, e.getActionCommand())) {
+		if(Methods.isContains(new String[]{"Hex","Dec","Bin"}, e.getActionCommand())) {
 			InputOutput.put("BeforeLastRadioClicked", InputOutput.get("LastRadioClicked"));
 			InputOutput.put("LastRadioClicked",e.getActionCommand());
 		}
@@ -146,17 +145,17 @@ public class Calculator extends JFrame implements ActionListener{
 				 */
 				InputOutput.put("FirstInputOutput",null);
 				InputOutput.put("SecondInputOutput",null);
-				for(String Name : methods.concat(HexBtns, DecBtns))
+				for(String Name : Methods.concat(HexBtns, DecBtns))
 					Btns.get(Name).setEnabled(true);
 				Btns.get(".").setEnabled(false);
 				if(!textField.getText().equals("") && InputOutput.get("BeforeLastRadioClicked") != InputOutput.get("LastRadioClicked"))
-					textField.setText(methods.toHex(textField.getText(),InputOutput.get("BeforeLastRadioClicked")));
+					textField.setText(Methods.toHex(textField.getText(),InputOutput.get("BeforeLastRadioClicked")));
 				break;
 				
-			case "Déc":
+			case "Dec":
 				/*
 				 * Initialiser les input par 'null', et activer tous les buttons propres au calcules decimale
-				 * et déactiver les autres
+				 * et dÃ©activer les autres
 				 * et si il ya une valeur au champs input, le transformer en decimale
 				 */
 				InputOutput.put("FirstInputOutput",null);
@@ -166,21 +165,21 @@ public class Calculator extends JFrame implements ActionListener{
 				for(String Name : HexBtns)
 					Btns.get(Name).setEnabled(false);
 				if(!textField.getText().equals("") && InputOutput.get("BeforeLastRadioClicked") != InputOutput.get("LastRadioClicked"))
-					textField.setText(methods.toDec(textField.getText(),InputOutput.get("BeforeLastRadioClicked")));
+					textField.setText(Methods.toDec(textField.getText(),InputOutput.get("BeforeLastRadioClicked")));
 				break;
 				
 			case "Bin":
 				/*
 				 * Initialiser les input par 'null', et activer tous les buttons propres au calcules binaire
-				 * et déactiver les autres
+				 * et dÃ©activer les autres
 				 * et si il ya une valeur au champs input, le transformer en binaire
 				 */
 				InputOutput.put("FirstInputOutput",null);
 				InputOutput.put("SecondInputOutput",null);
-				for(String Name : methods.concat(HexBtns, DecBtns))
+				for(String Name : Methods.concat(HexBtns, DecBtns))
 					Btns.get(Name).setEnabled(false);
 				if(!textField.getText().equals("") && InputOutput.get("BeforeLastRadioClicked") != InputOutput.get("LastRadioClicked"))
-					textField.setText(methods.toBin(textField.getText(),InputOutput.get("BeforeLastRadioClicked")));
+					textField.setText(Methods.toBin(textField.getText(),InputOutput.get("BeforeLastRadioClicked")));
 				break;
 				
 			case "On/Off":
@@ -208,11 +207,11 @@ public class Calculator extends JFrame implements ActionListener{
 				Btns.get("On/Off").setEnabled(true);
 				break;
 				
-			case "←":
+			case "->":
 				/*
 				 * permrt annuler le dernier nombre inserer au chapms input
 				 */
-				textField.setText(methods.cancelLastChar(textField.getText()));
+				textField.setText(Methods.cancelLastChar(textField.getText()));
 				break;
 				
 			case "c":
@@ -238,7 +237,7 @@ public class Calculator extends JFrame implements ActionListener{
 						InputOutput.put("SecondInputOutput",textField.getText());
 				}
 				/*
-				 * definir le type de l'opération a effectuer
+				 * definir le type de l'opÃ©ration a effectuer
 				 */
 				InputOutput.put("OprType", e.getActionCommand());
 				InputOutput.put("State", "true");
@@ -257,16 +256,16 @@ public class Calculator extends JFrame implements ActionListener{
 				if(!InputOutput.containsValue(null)) {
 					switch(InputOutput.get("OprType")) {
 					case "/":
-						textField.setText( methods.division(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
+						textField.setText( Methods.division(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
 						break;
 					case "*":
-						textField.setText(methods.multiplication(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
+						textField.setText(Methods.multiplication(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
 						break;
 					case "-":
-						textField.setText(methods.subtraction(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
+						textField.setText(Methods.subtraction(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
 						break;
 					case "+":
-						textField.setText(methods.addition(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
+						textField.setText(Methods.addition(InputOutput.get("FirstInputOutput"), InputOutput.get("SecondInputOutput"), InputOutput.get("OpdType")));
 						break;
 					}
 					/*
@@ -278,7 +277,7 @@ public class Calculator extends JFrame implements ActionListener{
 				break;
 			default:
 				/*
-				 * cette partie executer si l'utilisateur cliquer sur une des buttons ci-après:
+				 * cette partie executer si l'utilisateur cliquer sur une des buttons ci-aprÃ¨s:
 				 * 		[0,1,2,3,4,5,6,7,8,9,{,},A,B,C,D,E,F]
 				 */
 				if(InputOutput.get("State").equals("true")) {
@@ -291,7 +290,7 @@ public class Calculator extends JFrame implements ActionListener{
 				}else {
 					if(!e.getActionCommand().equals("."))
 						textField.setText(textField.getText() + e.getActionCommand());
-					else if(!methods.isContains(textField.getText(), '.'))
+					else if(!Methods.isContains(textField.getText(), '.'))
 							textField.setText(textField.getText() + ".");
 				}
 		}
